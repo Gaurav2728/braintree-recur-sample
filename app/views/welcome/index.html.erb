@@ -22,5 +22,6 @@
 <% end %>
 
 <dl>
-    <dt><%= link_to "Setup Your Payment Info", new_customer_path  %></dt>
+  <dt><%= link_to "Setup Your Payment Info", new_customer_path  %></dt>
+  <dt><%= link_to_if User.count > 0, "Trail recur", recur_plans_path%></dt>
 </dl>
