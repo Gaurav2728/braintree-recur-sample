@@ -1,16 +1,17 @@
 class TransactionsController < ApplicationController
 
   def new
-
-    if current_user.has_payment_info?
-      current_user.with_braintree_data!
-      @credit_card = current_user.default_credit_card
-      @product = Product.find(params[:product_id])
-      @tr_data = Braintree::TransparentRedirect.transaction_data(:redirect_url => confirm_transaction_url(:product_id => @product.id),
+    @product = Product.new
+    @user = User.last
+    if @user.has_payment_info?
+      @user.with_braintree_data!
+      @credit_card = @user.default_credit_card
+      @price = 500.00
+      @tr_data = Braintree::TransparentRedirect.transaction_data(:redirect_url => confirm_transaction_url(:user_id => @user.id),
                                                                  :transaction => {
-                                                                   :amount => @product.price,
+                                                                   :amount => @price,
                                                                    :type => "sale",
-                                                                   :customer_id => current_user.braintree_customer_id
+                                                                   :customer_id => @user.braintree_customer_id
                                                                   })
     else
       redirect_to new_customer_path
@@ -18,14 +19,15 @@ class TransactionsController < ApplicationController
   end
 
   def confirm
+    @user = User.find params[:user_id]
     @result = Braintree::TransparentRedirect.confirm(request.query_string)
 
     if @result.success?
       render :confirm
     else
-      @product = Product.find(params[:product_id])
-      current_user.with_braintree_data!
-      @credit_card = current_user.default_credit_card
+      @product = Product.new
+      @user.with_braintree_data!
+      @credit_card = @user.default_credit_card
       render :new
     end
   end
