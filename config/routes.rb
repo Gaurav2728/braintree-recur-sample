@@ -2,6 +2,7 @@ BraintreeRecurSample::Application.routes.draw do
 
   resources :customer, :only => [:new, :edit]
   resources :credit_card_info, :only => [:edit]
+  resources :recur_plans
 
   match 'customer/confirm' => 'customer#confirm', :as => :confirm_customer
   match 'credit_card_info/confirm' => 'credit_card_info#confirm', :as => :confirm_credit_card_info
