@@ -7,7 +7,7 @@
 <%= form_for :customer,
       :url => Braintree::TransparentRedirect.url,
       :params => @result && @result.params[:customer],
-      :existing => current_user,
+      :existing => @user,
       :builder => ApplicationHelper::BraintreeFormBuilder,
       :errors => @result && @result.errors.for(:customer) do |f| %>
   <%= field_set_tag "Customer" do %>

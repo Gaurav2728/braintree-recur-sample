@@ -1,9 +1,5 @@
 module ApplicationHelper
   
-  def current_user 
-    @user = User.new
-  end
-  
   class BraintreeFormBuilder < ActionView::Helpers::FormBuilder
     include ActionView::Helpers::AssetTagHelper
     include ActionView::Helpers::TagHelper
