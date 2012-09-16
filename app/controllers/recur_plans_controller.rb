@@ -9,7 +9,7 @@ class RecurPlansController < ApplicationController
 
      result = Braintree::Subscription.create(
                :payment_method_token => payment_method_token,
-               :plan_id => "recur001"
+               :plan_id => "recuryr"
               )
 
      flash[:notice] = "Subscription status: #{result.subscription.status}"
