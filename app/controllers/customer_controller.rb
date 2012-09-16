@@ -16,11 +16,15 @@ class CustomerController < ApplicationController
 
   def confirm
     @result = Braintree::TransparentRedirect.confirm(request.query_string)
-    @user = User.find_or_initialize_by_braintree_customer_id @result.customer.id
+    begin 
+     @user = User.find_or_initialize_by_braintree_customer_id @result.customer.id 
+    rescue
+     @user = User.new  
+    end  
     if @result.success?
       @user.braintree_customer_id = @result.customer.id
       @user.save!
-      render :action => "confirm"
+      redirect_to recur_plans_path(:id => @user.id)
     elsif @user.has_payment_info?
       @user.with_braintree_data!
       render :action => "edit"

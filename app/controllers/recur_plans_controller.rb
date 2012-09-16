@@ -3,7 +3,7 @@ class RecurPlansController < ApplicationController
   def index
     #@plans = Braintree::Plan.all 
     #raise @plans.inspect
-     customer_id = User.last.braintree_customer_id
+     customer_id = User.find(params[:id]).braintree_customer_id
      customer = Braintree::Customer.find(customer_id)
      payment_method_token = customer.credit_cards[0].token
 
